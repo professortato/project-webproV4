@@ -1,0 +1,65 @@
+<mxfile host="app.diagrams.net" agent="sakura-erd" version="24.0.0">
+  <diagram id="sakura-erd" name="ERD - ระบบสั่งอาหารซากุระ">
+    <mxGraphModel dx="1100" dy="760" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="ERD — ระบบสั่งอาหารร้านซากุระ (food.db / SQLite)" style="text;html=1;align=left;verticalAlign=middle;fontSize=18;fontStyle=1;fontColor=#7C1216;" vertex="1" parent="1">
+          <mxGeometry x="40" y="16" width="700" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- tables_status -->
+        <mxCell id="t_tables" value="&lt;b&gt;tables_status&lt;/b&gt;&lt;hr&gt;&lt;u&gt;table_no&lt;/u&gt;  INTEGER  (PK)&lt;br&gt;status  TEXT&lt;br&gt;updated_at  TEXT" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#FDEBD0;strokeColor=#B9770E;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="230" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- addon -->
+        <mxCell id="t_addon" value="&lt;b&gt;addon&lt;/b&gt;&lt;hr&gt;&lt;u&gt;addon_id&lt;/u&gt;  INTEGER  (PK)&lt;br&gt;category  TEXT&lt;br&gt;addon_type  TEXT&lt;br&gt;option_name  TEXT&lt;br&gt;extra_price  INTEGER&lt;br&gt;sort_order  INTEGER&lt;br&gt;multiple  INTEGER" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#E8DAEF;strokeColor=#6C3483;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="840" y="80" width="250" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- orders -->
+        <mxCell id="t_orders" value="&lt;b&gt;orders&lt;/b&gt;&lt;hr&gt;&lt;u&gt;order_id&lt;/u&gt;  INTEGER  (PK)&lt;br&gt;table_no  INTEGER  (FK → tables_status)&lt;br&gt;status  TEXT  (กำลังทำ/พร้อมเสิร์ฟ/เสิร์ฟแล้ว/ชำระแล้ว)&lt;br&gt;total  INTEGER&lt;br&gt;created_at  TEXT" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#D6EAF8;strokeColor=#2471A3;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="80" width="330" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- payments -->
+        <mxCell id="t_pay" value="&lt;b&gt;payments&lt;/b&gt;&lt;hr&gt;&lt;u&gt;payment_id&lt;/u&gt;  INTEGER  (PK)&lt;br&gt;table_no  INTEGER  (FK → tables_status)&lt;br&gt;total  INTEGER&lt;br&gt;received  INTEGER&lt;br&gt;change_amount  INTEGER&lt;br&gt;method  TEXT  (เงินสด/QR CODE)&lt;br&gt;paid_at  TEXT" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#D5F5E3;strokeColor=#1E8449;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="330" width="300" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- order_items -->
+        <mxCell id="t_items" value="&lt;b&gt;order_items&lt;/b&gt;&lt;hr&gt;&lt;u&gt;order_item_id&lt;/u&gt;  INTEGER  (PK)&lt;br&gt;order_id  INTEGER  (FK → orders)&lt;br&gt;menu_id  INTEGER  (FK → menu)&lt;br&gt;name  TEXT&lt;br&gt;quantity  INTEGER&lt;br&gt;unit_price  INTEGER&lt;br&gt;total_price  INTEGER&lt;br&gt;addons  TEXT  (JSON)" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#FADBD8;strokeColor=#B03A2E;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="330" width="300" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- menu -->
+        <mxCell id="t_menu" value="&lt;b&gt;menu&lt;/b&gt;&lt;hr&gt;&lt;u&gt;menu_id&lt;/u&gt;  INTEGER  (PK)&lt;br&gt;name  TEXT&lt;br&gt;price  INTEGER&lt;br&gt;image  TEXT&lt;br&gt;category  TEXT" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#FCF3CF;strokeColor=#B7950B;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="840" y="330" width="250" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships -->
+        <mxCell id="e1" value="1 : N (table_no)" style="endArrow=ERmany;startArrow=ERone;html=1;strokeColor=#2471A3;fontSize=11;" edge="1" parent="1" source="t_tables" target="t_orders">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="1 : N (table_no)" style="endArrow=ERmany;startArrow=ERone;html=1;strokeColor=#1E8449;fontSize=11;" edge="1" parent="1" source="t_tables" target="t_pay">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="1 : N (order_id)" style="endArrow=ERmany;startArrow=ERone;html=1;strokeColor=#B03A2E;fontSize=11;" edge="1" parent="1" source="t_orders" target="t_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="1 : N (menu_id)" style="endArrow=ERmany;startArrow=ERone;html=1;strokeColor=#B7950B;fontSize=11;" edge="1" parent="1" source="t_menu" target="t_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="เชื่อมด้วย category (เมนู ↔ ตัวเลือกเสริม)" style="endArrow=ERmany;startArrow=ERmany;html=1;dashed=1;strokeColor=#6C3483;fontSize=11;" edge="1" parent="1" source="t_menu" target="t_addon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note" value="หมายเหตุ: SQLite ในโปรเจกต์นี้ไม่ได้ประกาศ FOREIGN KEY จริง ความสัมพันธ์ด้านบนเป็นเชิงตรรกะที่โค้ดบังคับใช้&#10;(order_items.order_id→orders, order_items.menu_id→menu, orders.table_no และ payments.table_no→tables_status, addon↔menu ผ่าน category)" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#555;" vertex="1" parent="1">
+          <mxGeometry x="60" y="540" width="1030" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
